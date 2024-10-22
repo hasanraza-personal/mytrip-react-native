@@ -8,9 +8,8 @@ import { Alert, Image, StyleSheet, Text, View } from "react-native";
 import { Colors } from "../../constants/colors";
 import OutlinedButton from "../UI/OutlinedButton";
 
-function ImagePicker() {
+function ImagePicker({ onTakeImage }) {
   const [pickedImage, setPickedImage] = useState();
-  console.log("pickedImage: ", pickedImage);
   const [cameraPermissionInformatiom, requestPermission] =
     useCameraPermissions();
 
@@ -33,8 +32,6 @@ function ImagePicker() {
   }
 
   async function takeImageHandler() {
-    console.log("Take image");
-
     const hasPermission = await verifyPermissions();
     if (!hasPermission) {
       return;
@@ -45,8 +42,8 @@ function ImagePicker() {
       aspect: [16, 9],
       quality: 0.5,
     });
-    console.log("image: ", image.assets[0]);
     setPickedImage(image.assets[0].uri);
+    onTakeImage(image.assets[0].uri);
   }
 
   let imagePreview = <Text>No image taken yet.</Text>;
